@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+Import('env')
+
+env_module = env.Clone()
+
+# Thirdparty sources
+thirdparty_dir = 'thirdparty/exoquant/'
+env_module.Append(CCPATH=thirdparty_dir)
+
+env_thirdparty = env_module.Clone()
+env_thirdparty.add_source_files(env.modules_sources, thirdparty_dir + '*.c')
+env_thirdparty.disable_warnings()
+
+# Module sources
+env_module.add_source_files(env.modules_sources, '*.cpp')
+env_module.add_source_files(env.modules_sources, 'classes/*.cpp')
+
+Export('env_module')
