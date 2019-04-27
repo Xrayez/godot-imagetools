@@ -3,8 +3,9 @@
 
 const int ImageIndexed::MAX_PALETTE_SIZE = 256;
 
-ImageIndexed::ImageIndexed() {
-}
+ImageIndexedMemLoadFunc ImageIndexed::_indexed_png_mem_loader_func = NULL;
+SaveIndexedPNGFunc ImageIndexed::save_indexed_png_func = NULL;
+
 
 real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, bool p_with_alpha, bool p_high_quality) {
 
@@ -354,6 +355,21 @@ PoolVector<uint8_t> ImageIndexed::get_index_data() const {
 	return index_data;
 }
 
+// Error ImageIndexed::load_png(const String &p_path) {
+// 	return ImageLoader::load_image(p_path, this);
+// }
+
+Error ImageIndexed::save_indexed_png(const String &p_path) const {
+
+	if (save_indexed_png_func == NULL)
+		return ERR_UNAVAILABLE;
+
+	return save_indexed_png_func(p_path, Ref<ImageIndexed>((ImageIndexed *)this));
+}
+
+ImageIndexed::ImageIndexed() {
+}
+
 void ImageIndexed::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("generate_palette", "num_colors", "dithering", "with_alpha", "high_quality"), &ImageIndexed::generate_palette, DEFVAL(MAX_PALETTE_SIZE), DEFVAL(DITHER_NONE), DEFVAL(true), DEFVAL(false));
@@ -369,6 +385,8 @@ void ImageIndexed::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_palette_color", "index", "color"), &ImageIndexed::set_palette_color);
 	ClassDB::bind_method(D_METHOD("get_palette_color", "index"), &ImageIndexed::get_palette_color);
+
+	ClassDB::bind_method(D_METHOD("save_indexed_png", "path"), &ImageIndexed::save_indexed_png);
 
 	BIND_CONSTANT(MAX_PALETTE_SIZE);
 

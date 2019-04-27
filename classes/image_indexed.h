@@ -3,6 +3,11 @@
 
 #include "core/image.h"
 
+class ImageIndexed;
+
+typedef Error (*SaveIndexedPNGFunc)(const String &p_path, const Ref<ImageIndexed> &p_img);
+typedef Ref<ImageIndexed> (*ImageIndexedMemLoadFunc)(const uint8_t *p_png, int p_size);
+
 class ImageIndexed : public Image {
 	GDCLASS(ImageIndexed, Image);
 
@@ -14,6 +19,12 @@ protected:
 	static void _bind_methods();
 
 public:
+	static const int MAX_PALETTE_SIZE;
+
+	static ImageIndexedMemLoadFunc _indexed_png_mem_loader_func;
+	static SaveIndexedPNGFunc save_indexed_png_func;
+
+public:
 	/**
 	 * Indexed image and color palette interface.
 	 *
@@ -22,7 +33,6 @@ public:
 	 * Loaded images will have a color palette (if present) and extended to
 	 * compatible format, as there's no actual support for indexed images.
 	 */
-	static const int MAX_PALETTE_SIZE;
 
 	enum DitherMode {
 		DITHER_NONE,
@@ -45,6 +55,9 @@ public:
 
 	PoolVector<uint8_t> get_palette_data() const;
 	PoolVector<uint8_t> get_index_data() const;
+
+	// Error load_png(const String &p_path);
+	Error save_indexed_png(const String &p_path) const;
 
 	ImageIndexed();
 	// ~ImageIndexed();
