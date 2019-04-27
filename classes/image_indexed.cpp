@@ -8,6 +8,76 @@ ImageIndexedMemLoadFunc ImageIndexed::_indexed_png_mem_loader_func = NULL;
 SaveIndexedPNGFunc ImageIndexed::save_indexed_png_func = NULL;
 
 
+Error ImageIndexed::create_indexed(int p_num_palette_entries) {
+
+	ERR_FAIL_COND_V(empty(), ERR_UNCONFIGURED);
+
+	// Indexed image width and height determined by this image
+	const int width = get_width();
+	const int height = get_height();
+
+	const int num_pixels = width * height;
+
+	index_data.resize(0);
+	index_data.resize(num_pixels);
+	{
+		PoolVector<uint8_t>::Write w = index_data.write();
+		zeromem(w.ptr(), num_pixels);
+	}
+
+	const int ps = get_format_pixel_size(get_format());
+	const int num_colors = int(CLAMP(p_num_palette_entries, 1, MAX_PALETTE_SIZE));
+
+	palette_data.resize(0);
+	palette_data.resize(num_colors * ps);
+	{
+		PoolVector<uint8_t>::Write w = palette_data.write();
+		zeromem(w.ptr(), num_colors * ps);
+	}
+}
+
+Error ImageIndexed::create_indexed_from_data(const PoolVector<uint8_t> &p_palette_data, const PoolVector<uint8_t> &p_index_data) {
+
+	ERR_FAIL_COND_V(empty(), ERR_UNCONFIGURED);
+	ERR_FAIL_COND_V(p_index_data.size() == 0, ERR_CANT_CREATE);
+	ERR_FAIL_COND_V(p_palette_data.size() == 0, ERR_CANT_CREATE);
+
+	int ps = get_format_pixel_size(get_format());
+
+	switch (ps) {
+		case 3: break;
+		case 4: break;
+		default: {
+			ERR_EXPLAIN("Cannot create a palette, incompatible image format.");
+			ERR_FAIL_V(ERR_CANT_CREATE);
+		}
+	}
+	ERR_FAIL_COND_V(palette_data.size() % ps != 0, ERR_INVALID_DATA);
+
+	int palette_size = p_palette_data.size() / ps;
+	ERR_FAIL_COND_V(palette_size > MAX_PALETTE_SIZE, ERR_CANT_CREATE);
+
+	int index_size = p_index_data.size();
+	int num_pixels = get_width() * get_height();
+	ERR_FAIL_COND_V(index_size != num_pixels, ERR_CANT_CREATE);
+
+#ifdef DEBUG_ENABLED
+	// Ensure all indices point to valid palette entries
+	{
+		PoolVector<uint8_t>::Read ind = p_index_data.read();
+
+		for (int i = 0; i < index_size; ++i) {
+			ERR_EXPLAIN("Indices exceed (maximum) palette size.");
+			ERR_FAIL_COND_V(ind[i] > palette_size - 1, ERR_INVALID_DATA);
+		}
+	}
+#endif
+	palette_data = p_palette_data;
+	index_data = p_index_data;
+
+	return OK;
+}
+
 real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, bool p_with_alpha, bool p_high_quality) {
 
 	ERR_EXPLAIN("Cannot generate a palette from an empty image.");
@@ -70,48 +140,6 @@ real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, boo
 	exq_free(pExq);
 
 	return mean_error;
-}
-
-Error ImageIndexed::create_palette(const PoolVector<uint8_t> &p_palette_data, const PoolVector<uint8_t> &p_index_data) {
-
-	ERR_FAIL_COND_V(empty(), ERR_UNCONFIGURED);
-	ERR_FAIL_COND_V(p_index_data.size() == 0, ERR_CANT_CREATE);
-	ERR_FAIL_COND_V(p_palette_data.size() == 0, ERR_CANT_CREATE);
-
-	int ps = get_format_pixel_size(get_format());
-
-	switch (ps) {
-		case 3: break;
-		case 4: break;
-		default: {
-			ERR_EXPLAIN("Cannot create a palette, incompatible image format.");
-			ERR_FAIL_V(ERR_CANT_CREATE);
-		}
-	}
-	ERR_FAIL_COND_V(palette_data.size() % ps != 0, ERR_INVALID_DATA);
-
-	int palette_size = p_palette_data.size() / ps;
-	ERR_FAIL_COND_V(palette_size > MAX_PALETTE_SIZE, ERR_CANT_CREATE);
-
-	int index_size = p_index_data.size();
-	int num_pixels = get_width() * get_height();
-	ERR_FAIL_COND_V(index_size != num_pixels, ERR_CANT_CREATE);
-
-#ifdef DEBUG_ENABLED
-	// Ensure all indices point to valid palette entries
-	{
-		PoolVector<uint8_t>::Read ind = p_index_data.read();
-
-		for (int i = 0; i < index_size; ++i) {
-			ERR_EXPLAIN("Indices exceed (maximum) palette size.");
-			ERR_FAIL_COND_V(ind[i] > palette_size - 1, ERR_INVALID_DATA);
-		}
-	}
-#endif
-	palette_data = p_palette_data;
-	index_data = p_index_data;
-
-	return OK;
 }
 
 void ImageIndexed::clear_palette() {
@@ -377,7 +405,7 @@ Error ImageIndexed::load_indexed_png(const String &p_path) {
 	if (_indexed_png_mem_loader_func) {
 		Ref<ImageIndexed> img = _indexed_png_mem_loader_func(png, len);
 		copy_internals_from(img);
-		create_palette(img->get_palette_data(), img->get_index_data());
+		create_indexed_from_data(img->get_palette_data(), img->get_index_data());
 	}
 	memdelete(fr);
 
@@ -396,6 +424,9 @@ ImageIndexed::ImageIndexed() {
 }
 
 void ImageIndexed::_bind_methods() {
+
+	ClassDB::bind_method(D_METHOD("create_indexed", "num_palette_entries"), &ImageIndexed::create_indexed, DEFVAL(MAX_PALETTE_SIZE));
+	ClassDB::bind_method(D_METHOD("create_indexed_from_data", "palette_data", "index_data"), &ImageIndexed::create_indexed_from_data);
 
 	ClassDB::bind_method(D_METHOD("generate_palette", "num_colors", "dithering", "with_alpha", "high_quality"), &ImageIndexed::generate_palette, DEFVAL(MAX_PALETTE_SIZE), DEFVAL(DITHER_NONE), DEFVAL(true), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("clear_palette"), &ImageIndexed::clear_palette);

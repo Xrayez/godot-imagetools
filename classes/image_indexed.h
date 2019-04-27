@@ -38,8 +38,10 @@ public:
 		DITHER_ORDERED,
 		DITHER_RANDOM,
 	};
+	Error create_indexed(int p_num_palette_entries = MAX_PALETTE_SIZE);
+	Error create_indexed_from_data(const PoolVector<uint8_t> &p_palette_data, const PoolVector<uint8_t> &p_index_data);
+
 	real_t generate_palette(int p_num_colors = MAX_PALETTE_SIZE, DitherMode p_dither = DITHER_NONE, bool p_with_alpha = true, bool p_high_quality = false);
-	Error create_palette(const PoolVector<uint8_t> &p_palette_data, const PoolVector<uint8_t> &p_index_data);
 	void clear_palette();
 	Error apply_palette();
 

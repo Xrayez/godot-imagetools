@@ -193,7 +193,7 @@ Error ImageLoaderIndexedPNG::_load_image(void *rf_up, png_rw_ptr p_func, Ref<Ima
 		}
 		// Create image with palette and extend it
 		p_image->create(width, height, 0, Image::FORMAT_RGBA8);
-		p_image->create_palette(palette_data, dstbuff); // dstbuff = index data
+		p_image->create_indexed_from_data(palette_data, dstbuff);
 		p_image->apply_palette(); // (png_palette_to_rgb)
 
 	} else {
