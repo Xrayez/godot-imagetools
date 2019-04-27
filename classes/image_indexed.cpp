@@ -34,6 +34,7 @@ Error ImageIndexed::create_indexed(int p_num_palette_entries) {
 		PoolVector<uint8_t>::Write w = palette_data.write();
 		zeromem(w.ptr(), num_colors * ps);
 	}
+	return OK;
 }
 
 Error ImageIndexed::create_indexed_from_data(const PoolVector<uint8_t> &p_palette_data, const PoolVector<uint8_t> &p_index_data) {
@@ -76,6 +77,57 @@ Error ImageIndexed::create_indexed_from_data(const PoolVector<uint8_t> &p_palett
 	index_data = p_index_data;
 
 	return OK;
+}
+
+void ImageIndexed::set_pixel_indexed(int p_x, int p_y, int p_index) {
+
+	uint8_t *ptr = write_lock_indexed.ptr();
+
+#ifdef DEBUG_ENABLED
+	if (!ptr) {
+		ERR_EXPLAIN("Indexed image must be locked with 'lock_indexed()' before using set_pixel_indexed()");
+		ERR_FAIL_COND(!ptr);
+	}
+
+	ERR_FAIL_INDEX(p_x, get_width());
+	ERR_FAIL_INDEX(p_y, get_height());
+
+#endif
+
+	uint32_t ofs = p_y * get_width() + p_x;
+	ptr[ofs] = uint8_t(CLAMP(p_index, 0, MAX_PALETTE_SIZE - 1));
+}
+
+int ImageIndexed::get_pixel_indexed(int p_x, int p_y) const {
+
+	uint8_t *ptr = write_lock_indexed.ptr();
+
+#ifdef DEBUG_ENABLED
+	if (!ptr) {
+		ERR_EXPLAIN("Indexed image must be locked with 'lock_indexed()' before using get_pixel_indexed()");
+		ERR_FAIL_COND_V(!ptr, -1);
+	}
+
+	ERR_FAIL_INDEX_V(p_x, get_width(), -1);
+	ERR_FAIL_INDEX_V(p_y, get_height(), -1);
+
+#endif
+
+	uint32_t ofs = p_y * get_width() + p_x;
+	int index = ptr[ofs];
+
+	return index;
+}
+
+void ImageIndexed::lock_indexed() {
+
+	ERR_FAIL_COND(index_data.size() == 0);
+	write_lock_indexed = index_data.write();
+}
+
+void ImageIndexed::unlock_indexed() {
+
+	write_lock_indexed = PoolVector<uint8_t>::Write();
 }
 
 real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, bool p_with_alpha, bool p_high_quality) {
@@ -423,10 +475,23 @@ Error ImageIndexed::save_indexed_png(const String &p_path) const {
 ImageIndexed::ImageIndexed() {
 }
 
+ImageIndexed::~ImageIndexed() {
+
+	if (write_lock_indexed.ptr()) {
+		unlock_indexed();
+	}
+}
+
 void ImageIndexed::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("create_indexed", "num_palette_entries"), &ImageIndexed::create_indexed, DEFVAL(MAX_PALETTE_SIZE));
 	ClassDB::bind_method(D_METHOD("create_indexed_from_data", "palette_data", "index_data"), &ImageIndexed::create_indexed_from_data);
+
+	ClassDB::bind_method(D_METHOD("set_pixel_indexed", "x", "y", "index"), &ImageIndexed::set_pixel_indexed);
+	ClassDB::bind_method(D_METHOD("get_pixel_indexed", "x", "y"), &ImageIndexed::get_pixel_indexed);
+
+	ClassDB::bind_method(D_METHOD("lock_indexed"), &ImageIndexed::lock_indexed);
+	ClassDB::bind_method(D_METHOD("unlock_indexed"), &ImageIndexed::unlock_indexed);
 
 	ClassDB::bind_method(D_METHOD("generate_palette", "num_colors", "dithering", "with_alpha", "high_quality"), &ImageIndexed::generate_palette, DEFVAL(MAX_PALETTE_SIZE), DEFVAL(DITHER_NONE), DEFVAL(true), DEFVAL(false));
 	ClassDB::bind_method(D_METHOD("clear_palette"), &ImageIndexed::clear_palette);
