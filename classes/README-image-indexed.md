@@ -68,6 +68,6 @@ image.apply_palette()
 ## Example project
 
 You can try/test these features out here:
-https://github.com/Xrayez/godot-image-paletted-example
+https://github.com/Xrayez/godot-image-indexed-example
 
 *Images taken from https://github.com/godotengine/godot-demo-projects/*
