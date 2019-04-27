@@ -29,11 +29,10 @@ public:
 	 * Indexed image and color palette interface.
 	 *
 	 * Can generate an optimal color palette for this image.
-	 * The image will be saved as indexed if it has a palette associated.
+	 * The image can be loaded and saved as indexed.
 	 * Loaded images will have a color palette (if present) and extended to
 	 * compatible format, as there's no actual support for indexed images.
 	 */
-
 	enum DitherMode {
 		DITHER_NONE,
 		DITHER_ORDERED,
@@ -56,11 +55,10 @@ public:
 	PoolVector<uint8_t> get_palette_data() const;
 	PoolVector<uint8_t> get_index_data() const;
 
-	// Error load_png(const String &p_path);
+	Error load_indexed_png(const String &p_path);
 	Error save_indexed_png(const String &p_path) const;
 
 	ImageIndexed();
-	// ~ImageIndexed();
 };
 
 VARIANT_ENUM_CAST(ImageIndexed::DitherMode)

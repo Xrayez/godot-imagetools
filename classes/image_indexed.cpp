@@ -1,4 +1,5 @@
 #include "../thirdparty/exoquant/exoquant.h"
+#include "core/io/image_loader.h"
 #include "image_indexed.h"
 
 const int ImageIndexed::MAX_PALETTE_SIZE = 256;
@@ -356,9 +357,32 @@ PoolVector<uint8_t> ImageIndexed::get_index_data() const {
 	return index_data;
 }
 
-// Error ImageIndexed::load_png(const String &p_path) {
-// 	return ImageLoader::load_image(p_path, this);
-// }
+Error ImageIndexed::load_indexed_png(const String &p_path) {
+
+	Error err;
+	PoolVector<uint8_t> buffer;
+
+	FileAccess *fr = FileAccess::open(p_path, FileAccess::READ, &err);
+	if (!fr) {
+		ERR_PRINTS("Error opening file: " + p_path);
+		return err;
+	}
+
+	int len = fr->get_len();
+	buffer.resize(len);
+	PoolVector<uint8_t>::Write w = buffer.write();
+	uint8_t* png = w.ptr();
+	fr->get_buffer(png, len);
+
+	if (_indexed_png_mem_loader_func) {
+		Ref<ImageIndexed> img = _indexed_png_mem_loader_func(png, len);
+		copy_internals_from(img);
+		create_palette(img->get_palette_data(), img->get_index_data());
+	}
+	memdelete(fr);
+
+	return err;
+}
 
 Error ImageIndexed::save_indexed_png(const String &p_path) const {
 
@@ -387,6 +411,7 @@ void ImageIndexed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_palette_color", "index", "color"), &ImageIndexed::set_palette_color);
 	ClassDB::bind_method(D_METHOD("get_palette_color", "index"), &ImageIndexed::get_palette_color);
 
+	ClassDB::bind_method(D_METHOD("load_indexed_png", "path"), &ImageIndexed::load_indexed_png);
 	ClassDB::bind_method(D_METHOD("save_indexed_png", "path"), &ImageIndexed::save_indexed_png);
 
 	BIND_CONSTANT(MAX_PALETTE_SIZE);
