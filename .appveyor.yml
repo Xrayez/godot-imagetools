@@ -26,7 +26,7 @@ before_build:
   # Get Godot source and install the module
   - cd %APPVEYOR_BUILD_FOLDER%\..
   - git clone --depth=1 %GODOT_REPO_URL% && cd godot
-  - mklink /d modules\image_indexed %APPVEYOR_BUILD_FOLDER%
+  - mklink /d modules\imagetools %APPVEYOR_BUILD_FOLDER%
 
   - echo %GD_PLATFORM%
   - python --version

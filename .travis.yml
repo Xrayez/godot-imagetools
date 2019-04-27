@@ -93,7 +93,7 @@ before_script:
   - cd
   - git clone --depth=1 "$GODOT_REPO_URL"
   - cd "godot/"
-  - ln -s $TRAVIS_BUILD_DIR "modules/image_indexed"
+  - ln -s $TRAVIS_BUILD_DIR "modules/imagetools"
 
 script:
   - scons -j3 CC=$CC CXX=$CXX platform=$GODOT_TARGET TOOLS=$TOOLS $OPTIONS;
