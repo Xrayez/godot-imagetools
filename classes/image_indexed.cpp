@@ -22,7 +22,8 @@ real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, boo
 	const int num_colors = int(CLAMP(p_num_colors, 1, MAX_PALETTE_SIZE));
 
 	// Init
-	PoolVector<uint8_t>::Write w_src = get_data().write();
+	PoolVector<uint8_t> data = get_data();
+	PoolVector<uint8_t>::Write w_src = data.write();
 	uint8_t *src = w_src.ptr();
 
 	exq_data *pExq = exq_init();
