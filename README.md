@@ -7,7 +7,7 @@ This is a Godot module aimed to simplify and optimize various operations that ca
 be performed on an image. Currently you'll find the following classes for image
 manipulation:
 
-* `ImageIndexed` (see [description](classes/README-image-indexed.md))
+* `ImageIndexed` (see [description](classes/descriptions/ImageIndexed.md))
      * adds pseudo support for indexed images with a color palette.
 
 ### License and thirdparty libraries:
