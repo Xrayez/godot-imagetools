@@ -5,7 +5,7 @@
 #include "core/io/resource_saver.h"
 
 class ResourceSaverIndexedPNG : public ResourceFormatSaver {
-	GDCLASS(ResourceSaverIndexedPNG, ResourceFormatSaver)
+	
 public:
 	static Error save_image(const String &p_path, const Ref<ImageIndexed> &p_img);
 
