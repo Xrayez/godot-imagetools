@@ -3,23 +3,10 @@
 
 #include "core/image.h"
 
-class ImageTools : public Object {
-	GDCLASS(ImageTools, Object);
-
-private:
-	static ImageTools *singleton;
-
-protected:
-	static void _bind_methods();
+class ImageTools {
 
 public:
-	static ImageTools *get_singleton() { return singleton; }
-
-public:
-	void replace_color(Ref<Image> p_image, const Color &p_color, const Color &p_with_color);
-
-	ImageTools();
-	~ImageTools();
+	static void replace_color(Ref<Image> p_image, const Color &p_color, const Color &p_with_color);
 };
 
 #endif

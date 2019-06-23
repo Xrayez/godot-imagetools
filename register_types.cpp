@@ -5,10 +5,11 @@
 #include "drivers/png/image_loader_indexed_png.h"
 #include "drivers/png/resource_saver_indexed_png.h"
 
+#include "bind/image_tools_bind.h"
 #include "image_indexed.h"
 #include "image_tools.h"
 
-static ImageTools *_image_tools = NULL;
+static _ImageTools *_image_tools = NULL;
 
 static ImageLoaderIndexedPNG *image_loader_indexed_png;
 static Ref<ResourceSaverIndexedPNG> resource_saver_indexed_png;
@@ -16,10 +17,10 @@ static Ref<ResourceSaverIndexedPNG> resource_saver_indexed_png;
 void register_imagetools_types() {
 
 	// Singleton
-	_image_tools = memnew(ImageTools);
-	
-	ClassDB::register_class<ImageTools>();
-	Engine::get_singleton()->add_singleton(Engine::Singleton("ImageTools", ImageTools::get_singleton()));
+	_image_tools = memnew(_ImageTools);
+
+	ClassDB::register_class<_ImageTools>();
+	Engine::get_singleton()->add_singleton(Engine::Singleton("ImageTools", _ImageTools::get_singleton()));
 
 	// Indexed image
 	ClassDB::register_class<ImageIndexed>();
@@ -32,7 +33,7 @@ void register_imagetools_types() {
 }
 
 void unregister_imagetools_types() {
-	
+
 	memdelete(_image_tools);
 
 	if (image_loader_indexed_png)

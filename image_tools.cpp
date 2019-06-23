@@ -1,7 +1,5 @@
 #include "image_tools.h"
 
-ImageTools* ImageTools::singleton = NULL;
-
 void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const Color &p_with_color) {
     
     if (p_color == p_with_color) {
@@ -19,17 +17,4 @@ void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const C
         }
     }
     p_image->unlock();
-}
-
-void ImageTools::_bind_methods() {
-    
-    ClassDB::bind_method(D_METHOD("replace_color", "image", "color", "with_color"), &ImageTools::replace_color);    
-}
-
-ImageTools::ImageTools() {
-    singleton = this;
-}
-
-ImageTools::~ImageTools() {
-    singleton = NULL;
 }
