@@ -17,9 +17,9 @@ void _ImageTools::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("replace_color", "image", "color", "with_color"), &_ImageTools::replace_color);
 	ClassDB::bind_method(D_METHOD("bucket_fill", "image", "at", "fill_color", "fill_image", "connectivity"), &_ImageTools::bucket_fill, DEFVAL(true), DEFVAL(KERNEL_FOUR_WAY));
-    
-    BIND_ENUM_CONSTANT(KERNEL_FOUR_WAY);
-    BIND_ENUM_CONSTANT(KERNEL_EIGHT_WAY);
+
+	BIND_ENUM_CONSTANT(KERNEL_FOUR_WAY);
+	BIND_ENUM_CONSTANT(KERNEL_EIGHT_WAY);
 }
 
 _ImageTools::_ImageTools() {

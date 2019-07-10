@@ -21,13 +21,12 @@ void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const C
 
 Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const Color &p_fill_color, bool p_fill_image, KernelConnectivity p_kc) {
 
-    // Based on flood-fill algorithm
-    // Runs up to x35 faster compared to GDScript implementation
+	// Based on flood-fill algorithm
+	// Runs up to x35 faster compared to GDScript implementation
 
 	if (!has_pixelv(p_image, p_at)) {
-		return false;
+		return Ref<Image>();
 	}
-
 	p_image->lock();
 
 	Color filling_color = p_image->get_pixelv(p_at);
@@ -40,78 +39,78 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 
 	if (filling_color == c) {
 		p_image->unlock();
-		return false;
+		return Ref<Image>();
 	}
-    
-    int width = p_image->get_width();
-    int height = p_image->get_height();
-    bool mipmaps = p_image->has_mipmaps();
-    Image::Format format = p_image->get_format();
-    
-    Ref<Image> fill_image = memnew(Image);
-    fill_image->create(width, height, mipmaps, format);
-    fill_image->lock();
 
-    Vector2 at;
-    Vector2 pos = p_at;
-    Color pixel;
+	int width = p_image->get_width();
+	int height = p_image->get_height();
+	bool mipmaps = p_image->has_mipmaps();
+	Image::Format format = p_image->get_format();
 
-    Vector<Vector2> kernel;
-    switch (p_kc) {
-        case KERNEL_FOUR_WAY: {
-            kernel.push_back(Vector2(1, 0));
-            kernel.push_back(Vector2(0, -1));
-            kernel.push_back(Vector2(-1, 0));
-            kernel.push_back(Vector2(0, 1));
-        } break;
+	Ref<Image> fill_image = memnew(Image);
+	fill_image->create(width, height, mipmaps, format);
+	fill_image->lock();
 
-        case KERNEL_EIGHT_WAY: {
-            kernel.push_back(Vector2(1, 0));
-            kernel.push_back(Vector2(1, -1));
-            kernel.push_back(Vector2(0, -1));
-            kernel.push_back(Vector2(-1, -1));
-            kernel.push_back(Vector2(-1, 0));
-            kernel.push_back(Vector2(-1, 1));
-            kernel.push_back(Vector2(0, 1));
-            kernel.push_back(Vector2(1, 1));
-        } break;
-    }
-    
-    List<Vector2> to_fill;
-    to_fill.push_back(pos);
+	Vector2 at;
+	Vector2 pos = p_at;
+	Color pixel;
 
-    while (!to_fill.empty()) {
-        pos = to_fill.front()->get();
-        to_fill.pop_front();
+	Vector<Vector2> kernel;
+	switch (p_kc) {
+		case KERNEL_FOUR_WAY: {
+			kernel.push_back(Vector2(1, 0));
+			kernel.push_back(Vector2(0, -1));
+			kernel.push_back(Vector2(-1, 0));
+			kernel.push_back(Vector2(0, 1));
+		} break;
 
-        for (int i = 0; i < kernel.size(); ++i) {
+		case KERNEL_EIGHT_WAY: {
+			kernel.push_back(Vector2(1, 0));
+			kernel.push_back(Vector2(1, -1));
+			kernel.push_back(Vector2(0, -1));
+			kernel.push_back(Vector2(-1, -1));
+			kernel.push_back(Vector2(-1, 0));
+			kernel.push_back(Vector2(-1, 1));
+			kernel.push_back(Vector2(0, 1));
+			kernel.push_back(Vector2(1, 1));
+		} break;
+	}
 
-            const Vector2 &dir = kernel[i];
-            at = pos + dir;
+	List<Vector2> to_fill;
+	to_fill.push_back(pos);
 
-            if (has_pixelv(fill_image, at)) {
-                pixel = fill_image->get_pixelv(at);
-                if (pixel.a > 0.0)
-                    continue; // already filled
-            }
-            if (has_pixelv(fill_image, at)) {
-                pixel = p_image->get_pixelv(at);
-            } else {
-                continue;
-            }
-            if (pixel == filling_color) {
-                fill_image->set_pixelv(at, p_fill_color);
-                to_fill.push_back(at);
-            }
-        }
-    }
-    if (p_fill_image) {
-        // Fill the actual image (no undo)
-        // else just return filled area as a new image
-        Rect2 fill_rect(0, 0, width, height);
-        p_image->blend_rect(fill_image, fill_rect, Point2());
-    }
-    
+	while (!to_fill.empty()) {
+		pos = to_fill.front()->get();
+		to_fill.pop_front();
+
+		for (int i = 0; i < kernel.size(); ++i) {
+
+			const Vector2 &dir = kernel[i];
+			at = pos + dir;
+
+			if (has_pixelv(fill_image, at)) {
+				pixel = fill_image->get_pixelv(at);
+				if (pixel.a > 0.0)
+					continue; // already filled
+			}
+			if (has_pixelv(fill_image, at)) {
+				pixel = p_image->get_pixelv(at);
+			} else {
+				continue;
+			}
+			if (pixel == filling_color) {
+				fill_image->set_pixelv(at, p_fill_color);
+				to_fill.push_back(at);
+			}
+		}
+	}
+	if (p_fill_image) {
+		// Fill the actual image (no undo)
+		// else just return filled area as a new image
+		Rect2 fill_rect(0, 0, width, height);
+		p_image->blend_rect(fill_image, fill_rect, Point2());
+	}
+
 	fill_image->unlock();
 	p_image->unlock();
 
