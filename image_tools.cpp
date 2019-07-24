@@ -31,17 +31,6 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 
 	Color filling_color = p_image->get_pixelv(p_at);
 
-	// A hack to match exact color in the image
-	p_image->set_pixelv(p_at, p_fill_color);
-	Color c = p_image->get_pixelv(p_at);
-	// Restore pixel
-	p_image->set_pixelv(p_at, filling_color);
-
-	if (filling_color == c) {
-		p_image->unlock();
-		return Ref<Image>();
-	}
-
 	int width = p_image->get_width();
 	int height = p_image->get_height();
 	bool mipmaps = p_image->has_mipmaps();
