@@ -11,6 +11,21 @@ The module also provides some more dedicated image classes, currently you'll fin
 * `ImageIndexed` (see [description](classes/descriptions/ImageIndexed.md))
      * adds pseudo support for indexed images with a color palette.
      
+## Installation
+
+Before installing, you must be able to 
+[compile Godot Engine](https://docs.godotengine.org/en/latest/development/compiling/) 
+from source.
+
+```bash
+# Change directory to `modules` subfolder of Godot repository
+cd godot/modules/
+# Clone the module under directory named `imagetools`
+git clone https://github.com/Xrayez/godot-imagetools.git imagetools && cd ..
+# Compile the engine manually, for instance:
+scons platform=windows target=release_debug bits=64
+```
+     
 ## Contributing
      
 See [Contributing](CONTRIBUTING.md) if you are interested in extending the module in any way.
