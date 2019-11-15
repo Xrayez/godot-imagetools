@@ -49,8 +49,7 @@ Error ImageIndexed::create_indexed_from_data(const PoolVector<uint8_t> &p_palett
 		case 3: break;
 		case 4: break;
 		default: {
-			ERR_EXPLAIN("Cannot create a palette, incompatible image format.");
-			ERR_FAIL_V(ERR_CANT_CREATE);
+			ERR_FAIL_V_MSG(ERR_CANT_CREATE, "Cannot create a palette, incompatible image format.");
 		}
 	}
 	ERR_FAIL_COND_V(palette_data.size() % ps != 0, ERR_INVALID_DATA);
@@ -68,8 +67,7 @@ Error ImageIndexed::create_indexed_from_data(const PoolVector<uint8_t> &p_palett
 		PoolVector<uint8_t>::Read ind = p_index_data.read();
 
 		for (int i = 0; i < index_size; ++i) {
-			ERR_EXPLAIN("Indices exceed (maximum) palette size.");
-			ERR_FAIL_COND_V(ind[i] > palette_size - 1, ERR_INVALID_DATA);
+			ERR_FAIL_COND_V_MSG(ind[i] > palette_size - 1, ERR_INVALID_DATA, "Indices exceed (maximum) palette size.");
 		}
 	}
 #endif
@@ -85,8 +83,7 @@ void ImageIndexed::set_pixel_indexed(int p_x, int p_y, int p_index) {
 
 #ifdef DEBUG_ENABLED
 	if (!ptr) {
-		ERR_EXPLAIN("Indexed image must be locked with 'lock_indexed()' before using set_pixel_indexed()");
-		ERR_FAIL_COND(!ptr);
+		ERR_FAIL_COND_MSG(!ptr, "Indexed image must be locked with 'lock_indexed()' before using set_pixel_indexed()");
 	}
 
 	ERR_FAIL_INDEX(p_x, get_width());
@@ -104,8 +101,7 @@ int ImageIndexed::get_pixel_indexed(int p_x, int p_y) const {
 
 #ifdef DEBUG_ENABLED
 	if (!ptr) {
-		ERR_EXPLAIN("Indexed image must be locked with 'lock_indexed()' before using get_pixel_indexed()");
-		ERR_FAIL_COND_V(!ptr, -1);
+		ERR_FAIL_COND_V_MSG(!ptr, -1, "Indexed image must be locked with 'lock_indexed()' before using get_pixel_indexed()");
 	}
 
 	ERR_FAIL_INDEX_V(p_x, get_width(), -1);
@@ -132,11 +128,8 @@ void ImageIndexed::unlock_indexed() {
 
 real_t ImageIndexed::generate_palette(int p_num_colors, DitherMode p_dither, bool p_with_alpha, bool p_high_quality) {
 
-	ERR_EXPLAIN("Cannot generate a palette from an empty image.");
-	ERR_FAIL_COND_V(empty(), -1.0);
-
-	ERR_EXPLAIN("Cannot generate a palette, convert to FORMAT_RBGA8 first.");
-	ERR_FAIL_COND_V(get_format() != FORMAT_RGBA8, -1.0);
+	ERR_FAIL_COND_V_MSG(empty(), -1.0, "Cannot generate a palette from an empty image.");
+	ERR_FAIL_COND_V_MSG(get_format() != FORMAT_RGBA8, -1.0, "Cannot generate a palette, convert to FORMAT_RBGA8 first.");
 
 	const int width = get_width();
 	const int height = get_height();
@@ -203,12 +196,8 @@ void ImageIndexed::clear_palette() {
 Error ImageIndexed::apply_palette() {
 
 	// Converts indexed data with associated palette to compatible format
-
-	ERR_EXPLAIN("No index data. Generate or create palette first.");
-	ERR_FAIL_COND_V(index_data.size() == 0, ERR_UNCONFIGURED);
-
-	ERR_EXPLAIN("No palette data. Generate or manually set palette first.");
-	ERR_FAIL_COND_V(palette_data.size() == 0, ERR_UNCONFIGURED);
+	ERR_FAIL_COND_V_MSG(index_data.size() == 0, ERR_UNCONFIGURED, "No index data. Generate or create palette first.");
+	ERR_FAIL_COND_V_MSG(palette_data.size() == 0, ERR_UNCONFIGURED, "No palette data. Generate or manually set palette first.");
 
 	PoolVector<uint8_t> dest_data;
 	dest_data.resize(get_data().size());
@@ -242,8 +231,7 @@ Error ImageIndexed::apply_palette() {
 			}
 		} break;
 		default: {
-			ERR_EXPLAIN("Cannot apply palette, unsupported format");
-			ERR_FAIL_V(ERR_UNAVAILABLE);
+			ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Cannot apply palette, unsupported format");
 		}
 	}
 	bool used_mipmaps = has_mipmaps();
@@ -272,11 +260,8 @@ int ImageIndexed::get_palette_size() const {
 
 void ImageIndexed::set_palette(const PoolColorArray &p_palette) {
 
-	ERR_EXPLAIN("No index data. Generate or create palette first.");
-	ERR_FAIL_COND(index_data.size() == 0);
-
-	ERR_EXPLAIN("Cannot set a palette with different size.")
-	ERR_FAIL_COND(p_palette.size() != get_palette_size());
+	ERR_FAIL_COND_MSG(index_data.size() == 0, "No index data. Generate or create palette first.");
+	ERR_FAIL_COND_MSG(p_palette.size() != get_palette_size(), "Cannot set a palette with different size.");
 
 	int ps = get_format_pixel_size(get_format());
 	int num_colors = p_palette.size();
@@ -310,8 +295,7 @@ void ImageIndexed::set_palette(const PoolColorArray &p_palette) {
 			}
 		} break;
 		default: {
-			ERR_EXPLAIN("Unsupported palette format");
-			ERR_FAIL();
+			ERR_FAIL_MSG("Unsupported palette format");
 		}
 	}
 }
@@ -353,8 +337,7 @@ PoolColorArray ImageIndexed::get_palette() const {
 			}
 		} break;
 		default: {
-			ERR_EXPLAIN("Unsupported palette format");
-			ERR_FAIL_V(PoolColorArray());
+			ERR_FAIL_V_MSG(PoolColorArray(), "Unsupported palette format");
 		}
 	}
 	return palette;
@@ -385,8 +368,7 @@ void ImageIndexed::set_palette_color(int p_idx, const Color p_color) {
 			ptr[ofs + 3] = uint8_t(CLAMP(p_color.a * 255.0, 0, 255));
 		} break;
 		default: {
-			ERR_EXPLAIN("Unsupported palette format");
-			ERR_FAIL();
+			ERR_FAIL_MSG("Unsupported palette format");
 		}
 	}
 }
@@ -420,8 +402,7 @@ Color ImageIndexed::get_palette_color(int p_idx) const {
 			return Color(r, g, b, a);
 		} break;
 		default: {
-			ERR_EXPLAIN("Unsupported palette format");
-			ERR_FAIL_V(Color());
+			ERR_FAIL_V_MSG(Color(), "Unsupported palette format");
 		}
 	}
 	return Color();

@@ -163,9 +163,7 @@ Error ImageLoaderIndexedPNG::_load_image(void *rf_up, png_rw_ptr p_func, Ref<Ima
 
 	if (color == PNG_COLOR_TYPE_PALETTE) {
 		// Loaded data are indices
-
-		ERR_EXPLAIN("Expected to extract PNG palette, got none.");
-		ERR_FAIL_COND_V(png_palette == NULL, ERR_BUG);
+		ERR_FAIL_COND_V_MSG(png_palette == NULL, ERR_BUG, "Expected to extract PNG palette, got none.");
 
 		PoolVector<uint8_t> palette_data;
 		palette_data.resize(palette_size * 4);
@@ -197,9 +195,7 @@ Error ImageLoaderIndexedPNG::_load_image(void *rf_up, png_rw_ptr p_func, Ref<Ima
 		p_image->apply_palette(); // (png_palette_to_rgb)
 
 	} else {
-		ERR_EXPLAIN("Attempt to create a regular image with a palette.");
-		ERR_FAIL_COND_V(png_palette, ERR_BUG);
-
+		ERR_FAIL_COND_V_MSG(png_palette, ERR_BUG, "Attempt to create a regular image with a palette.");
 		// Loaded data are pixels
 		p_image->create(width, height, 0, fmt, dstbuff);
 	}

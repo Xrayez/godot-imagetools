@@ -17,9 +17,8 @@ Error ResourceSaverIndexedPNG::save(const String &p_path, const RES &p_resource,
 
 	Ref<ImageTexture> texture = p_resource;
 
-	ERR_FAIL_COND_V(!texture.is_valid(), ERR_INVALID_PARAMETER);
-	ERR_EXPLAIN("Can't save empty texture as PNG");
-	ERR_FAIL_COND_V(!texture->get_width() || !texture->get_height(), ERR_INVALID_PARAMETER);
+	ERR_FAIL_COND_V_MSG(texture.is_null(), ERR_INVALID_PARAMETER, "Invalid texture passed.");
+	ERR_FAIL_COND_V_MSG(!texture->get_width() || !texture->get_height(), ERR_INVALID_PARAMETER, "Can't save empty texture as PNG.");
 
 	Ref<ImageIndexed> img = texture->get_data();
 
@@ -140,8 +139,7 @@ Error ResourceSaverIndexedPNG::save_image(const String &p_path, const Ref<ImageI
 			case Image::FORMAT_RGB8: ps = 3; break;
 			case Image::FORMAT_RGBA8: ps = 4; break;
 			default: {
-				ERR_EXPLAIN("Cannot save indexed PNG image, unsupported format");
-				ERR_FAIL_V(ERR_UNAVAILABLE);
+				ERR_FAIL_V_MSG(ERR_UNAVAILABLE, "Cannot save indexed PNG image, unsupported format");
 			}
 		}
 		// RGB
