@@ -6,11 +6,20 @@
 This is a [Godot](https://github.com/godotengine/godot) module aimed to extend, optimize, and/or simplify various operations that can
 be performed on an image. It provides and exposes the main `ImageTools` singleton for easy image processing. It's aimed to build upon Godot's built-in `Image` class to cater specific user needs.
 
-The module also provides some more dedicated image classes, currently you'll find the following:
+### List of public methods:
+| Method         | Short Description                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| `replace_color` | Replaces all occurrences of a given color with another one within an image. |
+| `bucket_fill`   | Fills the area with a color confined by opaque pixels.                     |
 
-* `ImageIndexed` (see [description](classes/descriptions/ImageIndexed.md))
-     * adds pseudo support for indexed images with a color palette.
+
+### List of classes:
+
+| Class        | Short Description                                                                                          |
+|----------------|----------------------------------------------------------------------------------------------------|
+| [ImageIndexed](classes/descriptions/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette. |
      
+
 ## Installation
 
 Before installing, you must be able to 
