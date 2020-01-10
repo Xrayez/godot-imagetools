@@ -22,8 +22,15 @@ public:
 	};
 
 public:
+	// Image methods
 	void replace_color(Ref<Image> p_image, const Color &p_color, const Color &p_with_color);
 	Ref<Image> bucket_fill(Ref<Image> p_image, const Point2 &p_at, const Color &p_fill_color, bool p_fill_image = true, KernelConnectivity p_kc = KERNEL_FOUR_WAY);
+
+	// Pixel methods
+	bool has_pixel(Ref<Image> p_image, int x, int y);
+	bool has_pixelv(Ref<Image> p_image, const Vector2 &p_pos);
+	Variant get_pixel_or_null(Ref<Image> p_image, int x, int y);
+	Variant get_pixelv_or_null(Ref<Image> p_image, const Vector2 &p_pos);
 
 	_ImageTools();
 };

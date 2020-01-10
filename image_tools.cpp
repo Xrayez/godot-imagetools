@@ -107,17 +107,23 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 }
 
 bool ImageTools::has_pixel(Ref<Image> p_image, int x, int y) {
+	return get_pixel_or_null(p_image, x, y);
+}
 
-	const int width = p_image->get_width();
-	const int height = p_image->get_height();
+bool ImageTools::has_pixelv(Ref<Image> p_image, const Vector2 &p_pos) {
+	return get_pixelv_or_null(p_image, p_pos);
+}
 
-	if (x >= 0 && x < width && y >= 0 && y < height) {
+bool ImageTools::get_pixel_or_null(Ref<Image> p_image, int x, int y, Color* r_pixel) {
+	if (x >= 0 && x < p_image->get_width() && y >= 0 && y < p_image->get_height()) {
+		if (r_pixel) {
+			*r_pixel = p_image->get_pixel(x, y);
+		}
 		return true;
 	}
 	return false;
 }
 
-bool ImageTools::has_pixelv(Ref<Image> p_image, const Vector2 &p_pos) {
-
-	return has_pixel(p_image, p_pos.x, p_pos.y);
+bool ImageTools::get_pixelv_or_null(Ref<Image> p_image, const Vector2 &p_pos, Color* r_pixel) {
+	return get_pixel_or_null(p_image, p_pos.x, p_pos.y, r_pixel);
 }
