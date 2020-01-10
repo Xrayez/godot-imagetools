@@ -155,6 +155,7 @@
 		</method>
 	</methods>
 	<members>
+		<member name="data" type="Dictionary" setter="_set_data" getter="_get_data" override="true" default="{&quot;data&quot;: PoolByteArray(  ),&quot;format&quot;: &quot;Lum8&quot;,&quot;height&quot;: 0,&quot;mipmaps&quot;: false,&quot;width&quot;: 0}" />
 		<member name="palette" type="PoolColorArray" setter="set_palette" getter="get_palette">
 			Represents the color palette of this image. The palette can be replaced if the image already has a palette with the same size. In order to change the number of palette entries, use [method create_indexed], [method generate_palette], or [method clear_palette]. Note that changing the palette size invalidates existing index data and has to be cleared, which is done automatically.
 		</member>
