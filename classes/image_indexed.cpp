@@ -425,7 +425,7 @@ Error ImageIndexed::load_indexed_png(const String &p_path) {
 
 	FileAccess *fr = FileAccess::open(p_path, FileAccess::READ, &err);
 	if (!fr) {
-		ERR_PRINTS("Error opening file: " + p_path);
+		ERR_PRINT("Error opening file: " + p_path);
 		return err;
 	}
 
