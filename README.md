@@ -1,7 +1,7 @@
 # Godot ImageTools
 
-[![Build Status](https://travis-ci.com/Xrayez/godot-imagetools.svg?branch=master)](https://travis-ci.com/Xrayez/godot-imagetools)
-[![Build status](https://ci.appveyor.com/api/projects/status/tbtra8e221si05bq/branch/master?svg=true)](https://ci.appveyor.com/project/Xrayez/godot-imagetools/branch/master)
+[![Build Status](https://travis-ci.com/Xrayez/godot-imagetools.svg?branch=master-gd3)](https://travis-ci.com/Xrayez/godot-imagetools)
+[![Build status](https://ci.appveyor.com/api/projects/status/tbtra8e221si05bq/branch/master-gd3?svg=true)](https://ci.appveyor.com/project/Xrayez/godot-imagetools/branch/master-gd3)
 
 This is a [Godot](https://github.com/godotengine/godot) module aimed to extend, optimize, and/or simplify various operations that can
 be performed on an image. It provides and exposes the main `ImageTools` singleton for easy image processing. It's aimed to build upon Godot's built-in `Image` class to cater specific user needs.
