@@ -36,9 +36,9 @@
 		<method name="create_indexed_from_data">
 			<return type="int" enum="Error">
 			</return>
-			<argument index="0" name="palette_data" type="PoolByteArray">
+			<argument index="0" name="palette_data" type="PackedByteArray">
 			</argument>
-			<argument index="1" name="index_data" type="PoolByteArray">
+			<argument index="1" name="index_data" type="PackedByteArray">
 			</argument>
 			<description>
 				A low-level interface to allocate indexed image and color palette from raw data. Make sure that the data is valid and all indices point to valid color palette entries. The palette bitness is determined by image pixel size (in bytes).
@@ -155,8 +155,8 @@
 		</method>
 	</methods>
 	<members>
-		<member name="data" type="Dictionary" setter="_set_data" getter="_get_data" override="true" default="{&quot;data&quot;: PoolByteArray(  ),&quot;format&quot;: &quot;Lum8&quot;,&quot;height&quot;: 0,&quot;mipmaps&quot;: false,&quot;width&quot;: 0}" />
-		<member name="palette" type="PoolColorArray" setter="set_palette" getter="get_palette">
+		<member name="data" type="Dictionary" setter="_set_data" getter="_get_data" override="true" default="{&quot;data&quot;: PackedByteArray(  ),&quot;format&quot;: &quot;Lum8&quot;,&quot;height&quot;: 0,&quot;mipmaps&quot;: false,&quot;width&quot;: 0}" />
+		<member name="palette" type="PackedColorArray" setter="set_palette" getter="get_palette">
 			Represents the color palette of this image. The palette can be replaced if the image already has a palette with the same size. In order to change the number of palette entries, use [method create_indexed], [method generate_palette], or [method clear_palette]. Note that changing the palette size invalidates existing index data and has to be cleared, which is done automatically.
 		</member>
 	</members>

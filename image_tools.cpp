@@ -6,8 +6,6 @@ void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const C
 		return;
 	}
 
-	p_image->lock();
-
 	for (int y = 0; y < p_image->get_height(); ++y) {
 		for (int x = 0; x < p_image->get_width(); ++x) {
 
@@ -16,7 +14,6 @@ void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const C
 			}
 		}
 	}
-	p_image->unlock();
 }
 
 Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const Color &p_fill_color, bool p_fill_image, KernelConnectivity p_kc) {
@@ -27,8 +24,6 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 	if (!has_pixelv(p_image, p_at)) {
 		return Ref<Image>();
 	}
-	p_image->lock();
-
 	Color filling_color = p_image->get_pixelv(p_at);
 
 	int width = p_image->get_width();
@@ -38,7 +33,6 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 
 	Ref<Image> fill_image = memnew(Image);
 	fill_image->create(width, height, mipmaps, format);
-	fill_image->lock();
 
 	Vector2 at;
 	Vector2 pos = p_at;
@@ -99,9 +93,6 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 		Rect2 fill_rect(0, 0, width, height);
 		p_image->blend_rect(fill_image, fill_rect, Point2());
 	}
-
-	fill_image->unlock();
-	p_image->unlock();
 
 	return fill_image;
 }
