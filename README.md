@@ -3,8 +3,22 @@
 [![Build Status](https://travis-ci.com/Xrayez/godot-imagetools.svg?branch=master-gd3)](https://travis-ci.com/Xrayez/godot-imagetools)
 [![Build status](https://ci.appveyor.com/api/projects/status/tbtra8e221si05bq/branch/master-gd3?svg=true)](https://ci.appveyor.com/project/Xrayez/godot-imagetools/branch/master-gd3)
 
-This is a [Godot](https://github.com/godotengine/godot) module aimed to extend, optimize, and/or simplify various operations that can
-be performed on an image. It provides and exposes the main `ImageTools` singleton for easy image processing. It's aimed to build upon Godot's built-in `Image` class to cater specific user needs.
+This is a [Godot](https://github.com/godotengine/godot) module aimed to extend,
+optimize, and/or simplify various operations that can be performed on an image.
+It provides and exposes the main `ImageTools` singleton for easy image
+processing. It aims to build upon Godot's built-in `Image` class to cater
+specific user needs.
+
+### Compatibility
+There are separate branches which are targeted for specific Godot Engine's major
+version.
+
+Regarding latest module version in development, switch to
+* [`master-gd3`](https://github.com/Xrayez/godot-imagetools/tree/master-gd3) branch for Godot 3
+* [`master-gd4`](https://github.com/Xrayez/godot-imagetools/tree/master-gd4) branch for Godot 4
+
+Similarly, you may use any of the stable branches with a similar branch
+encoding, such as `1.0-gd3` or `1.0-gd4`, if available.
 
 ### List of public methods:
 | Method              | Short Description                                                           |
@@ -16,7 +30,7 @@ be performed on an image. It provides and exposes the main `ImageTools` singleto
 
 ### List of classes:
 
-| Class        | Short Description                                                                                          |
+| Class          | Short Description                                                                                  |
 |----------------|----------------------------------------------------------------------------------------------------|
 | [ImageIndexed](classes/descriptions/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette. |
 
@@ -37,10 +51,16 @@ scons platform=windows target=release_debug bits=64
      
 ## Contributing
      
-See [Contributing](CONTRIBUTING.md) if you are interested in extending the module in any way.
+See [Contributing](CONTRIBUTING.md) if you are interested in extending the
+module in any way.
+
+Any new features are encouraged to be developed against the latest Godot
+Engine's *stable* version, and later ported to the latest engine's *development*
+version.
 
 ## License and thirdparty libraries:
 The module is under MIT license.
 
-The module uses [exoquant](https://github.com/exoticorn/exoquant) library for image
-quantization which is under MIT license, see [thirdparty/README.md](thirdparty/README.md)
+The module uses [exoquant](https://github.com/exoticorn/exoquant) library for
+image quantization which is under MIT license, see
+[thirdparty/README.md](thirdparty/README.md)
