@@ -258,16 +258,6 @@ static Ref<ImageIndexed> _load_mem_indexed_png(const uint8_t *p_png, int p_size)
 	return img;
 }
 
-static void _write_png_data(png_structp png_ptr, png_bytep data, png_size_t p_length) {
-
-	PoolVector<uint8_t> &v = *(PoolVector<uint8_t> *)png_get_io_ptr(png_ptr);
-	int vs = v.size();
-
-	v.resize(vs + p_length);
-	PoolVector<uint8_t>::Write w = v.write();
-	copymem(&w[vs], data, p_length);
-}
-
 ImageLoaderIndexedPNG::ImageLoaderIndexedPNG() {
 
 	ImageIndexed::_indexed_png_mem_loader_func = _load_mem_indexed_png;
