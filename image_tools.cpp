@@ -1,4 +1,6 @@
 #include "image_tools.h"
+#include "modules/imagetools/thirdparty/hqx/HQ2x.hh"
+#include "modules/imagetools/thirdparty/hqx/HQ3x.hh"
 
 void ImageTools::replace_color(Ref<Image> p_image, const Color &p_color, const Color &p_with_color) {
 
@@ -104,6 +106,44 @@ Ref<Image> ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, const
 	p_image->unlock();
 
 	return fill_image;
+}
+
+void ImageTools::resize_hqx(Ref<Image> p_image, int p_scale) {
+	ERR_FAIL_COND(p_scale < 2);
+	ERR_FAIL_COND(p_scale > 3);
+	
+	bool used_mipmaps = p_image->has_mipmaps();
+
+	Image::Format current = p_image->get_format();
+	if (current != Image::FORMAT_RGBA8) {
+		p_image->convert(Image::FORMAT_RGBA8);
+	}
+	PoolVector<uint8_t> dest;
+	PoolVector<uint8_t> src = p_image->get_data();
+	
+	const int new_width = p_image->get_width() * p_scale;
+	const int new_height = p_image->get_height() * p_scale;
+	dest.resize(new_width * new_height * 4);
+	{
+		PoolVector<uint8_t>::Read r = src.read();
+		PoolVector<uint8_t>::Write w = dest.write();
+		
+		ERR_FAIL_COND(!r.ptr());
+		
+		HQx *hqx;
+		if (p_scale == 2) {
+			hqx = memnew(HQ2x);
+		} else if (p_scale == 3) {	
+			hqx = memnew(HQ3x);
+		}
+		hqx->resize((const uint32_t *)r.ptr(), p_image->get_width(), p_image->get_height(), (uint32_t *)w.ptr());
+		memdelete(hqx);
+	}
+	p_image->create(new_width, new_height, false, Image::FORMAT_RGBA8, dest);
+
+	if (used_mipmaps) {
+		p_image->generate_mipmaps();
+	}
 }
 
 bool ImageTools::has_pixel(Ref<Image> p_image, int x, int y) {

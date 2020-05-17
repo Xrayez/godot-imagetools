@@ -25,6 +25,7 @@ encoding, such as `1.0-gd3` or `1.0-gd4`, if available.
 |---------------------|-----------------------------------------------------------------------------|
 | `replace_color`     | Replaces all occurrences of a given color with another one within an image. |
 | `bucket_fill`       | Fills the area with a color confined by opaque pixels.                      |
+| `resize_hqx`        | Expands the image using either HQ2X or HQ3X algorithms.                     |
 | `has_pixel`         | Tells whether a pixel lies inside image coordinates.                        |
 | `get_pixel_or_null` | Returns a pixel at specified image coordinates, or null if doesn't exist.   |
 
@@ -58,9 +59,8 @@ Any new features are encouraged to be developed against the latest Godot
 Engine's *stable* version, and later ported to the latest engine's *development*
 version.
 
-## License and thirdparty libraries:
+## License:
 The module is under MIT license.
 
-The module uses [exoquant](https://github.com/exoticorn/exoquant) library for
-image quantization which is under MIT license, see
-[thirdparty/README.md](thirdparty/README.md)
+For the full list of third-party libraries used by the module, see
+[thirdparty/README.md](thirdparty/README.md).

@@ -13,6 +13,10 @@ Ref<Image> _ImageTools::bucket_fill(Ref<Image> p_image, const Point2 &p_at, cons
 	return ImageTools::bucket_fill(p_image, p_at, p_fill_color, p_fill_image, ImageTools::KernelConnectivity(p_kc));
 }
 
+void _ImageTools::resize_hqx(Ref<Image> p_image, int p_scale) {
+	return ImageTools::resize_hqx(p_image, p_scale);
+}
+
 bool _ImageTools::has_pixel(Ref<Image> p_image, int x, int y) {
 
 	return ImageTools::has_pixel(p_image, x, y);
@@ -42,6 +46,7 @@ void _ImageTools::_bind_methods() {
 	// Image methods
 	ClassDB::bind_method(D_METHOD("replace_color", "image", "color", "with_color"), &_ImageTools::replace_color);
 	ClassDB::bind_method(D_METHOD("bucket_fill", "image", "at", "fill_color", "fill_image", "connectivity"), &_ImageTools::bucket_fill, DEFVAL(true), DEFVAL(KERNEL_FOUR_WAY));
+	ClassDB::bind_method(D_METHOD("resize_hqx", "image", "scale"), &_ImageTools::resize_hqx, DEFVAL(2));
 	
 	// Pixel methods
 	ClassDB::bind_method(D_METHOD("get_pixel_or_null", "image", "x", "y"), &_ImageTools::get_pixel_or_null);
