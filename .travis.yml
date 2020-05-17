@@ -63,13 +63,13 @@ addons:
 
 install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$GODOT_TARGET" = "android" ]; then
-      misc/travis/android-tools-linux.sh;
+      misc/ci/travis/android-tools-linux.sh;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-      misc/travis/scons-local-osx.sh;
+      misc/ci/travis/scons-local-osx.sh;
     fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$GODOT_TARGET" = "android" ]; then
-      misc/travis/android-tools-osx.sh;
+      misc/ci/travis/android-tools-osx.sh;
     fi
 
 before_script:
