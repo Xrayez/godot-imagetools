@@ -88,6 +88,17 @@
 				Replaces all occurrences of a given color with another one within the image.
 			</description>
 		</method>
+		<method name="resize_hqx">
+			<return type="void">
+			</return>
+			<argument index="0" name="image" type="Image">
+			</argument>
+			<argument index="1" name="scale" type="int" default="2">
+			</argument>
+			<description>
+				Expands the image using HQ2X algorithm with the [code]scale[/code] set to [code]2[/code] or the HQ3X algorithm with the [code]scale[/code] set to [code]3[/code].
+			</description>
+		</method>
 	</methods>
 	<constants>
 		<constant name="KERNEL_FOUR_WAY" value="0" enum="KernelConnectivity">
