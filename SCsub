@@ -4,16 +4,22 @@ Import('env')
 env_module = env.Clone()
 
 # Thirdparty sources
-thirdparty_dir = 'thirdparty/exoquant/'
-
-env_module.Append(CCPATH=thirdparty_dir)
-
-env_module.Append(CPPPATH='.')
-env_module.Append(CPPPATH='classes/')
+thirdparty_dirs = [
+    "thirdparty/exoquant/",
+    "thirdparty/hq3x/",
+]
+thirdparty_sources = []
+thirdparty_sources += Glob("thirdparty/exoquant/*.c")
+thirdparty_sources += Glob("thirdparty/hqx/*.cc")
 
 env_thirdparty = env_module.Clone()
-env_thirdparty.add_source_files(env.modules_sources, thirdparty_dir + '*.c')
+env_thirdparty.add_source_files(env.modules_sources, thirdparty_sources)
 env_thirdparty.disable_warnings()
+env_thirdparty.Append(CPPPATH='thirdparty/')
+
+env_module.Append(CPPPATH='.')
+env_module.Append(CPPPATH='thirdparty/')
+env_module.Append(CPPPATH='classes/')
 
 # Module sources
 env_module.add_source_files(env.modules_sources, '*.cpp')
