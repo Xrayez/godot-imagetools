@@ -126,6 +126,8 @@ void ImageTools::resize_hqx(Ref<Image> p_image, int p_scale) {
 			hqx = memnew(HQ2x);
 		} else if (p_scale == 3) {	
 			hqx = memnew(HQ3x);
+		} else {
+			hqx = memnew(HQ2x); // Fallback to HQ2x in all cases.
 		}
 		hqx->resize((const uint32_t *)r, p_image->get_width(), p_image->get_height(), (uint32_t *)w);
 		memdelete(hqx);
