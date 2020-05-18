@@ -91,7 +91,7 @@ install:
       export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64;
       export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:${PATH};
       java -version;
-      misc/travis/android-tools-linux.sh;
+      misc/ci/travis/android-tools-linux.sh;
     fi
 
 before_script:
