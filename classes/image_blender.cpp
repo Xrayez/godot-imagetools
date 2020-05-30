@@ -4,41 +4,40 @@ Color ImageBlender::calculate_factor(const Color &p_src, const Color &p_dst, Ble
 	Color color_factor;
 
 	switch (p_factor) {
-		case FACTOR_ZERO:
+		case FACTOR_ZERO: {
 			color_factor = Color(0, 0, 0, 0);
-			break;
-		case FACTOR_ONE:
+		} break;
+		case FACTOR_ONE: {
 			color_factor = Color(1, 1, 1, 1);
-			break;
-		case FACTOR_SRC_COLOR:
+		} break;
+		case FACTOR_SRC_COLOR: {
 			color_factor = p_src;
-			break;
-		case FACTOR_ONE_MINUS_SRC_COLOR:
+		} break;
+		case FACTOR_ONE_MINUS_SRC_COLOR: {
 			color_factor = Color(1, 1, 1, 1) - p_src;
-			break;
-		case FACTOR_DST_COLOR:
+		} break;
+		case FACTOR_DST_COLOR: {
 			color_factor = p_dst;
-			break;
-		case FACTOR_ONE_MINUS_DST_COLOR:
+		} break;
+		case FACTOR_ONE_MINUS_DST_COLOR: {
 			color_factor = Color(1, 1, 1, 1) - p_dst;
-			break;
-		case FACTOR_SRC_ALPHA:
+		} break;
+		case FACTOR_SRC_ALPHA: {
 			color_factor = Color(p_src.a, p_src.a, p_src.a, p_src.a);
-			break;
-		case FACTOR_ONE_MINUS_SRC_ALPHA:
+		} break;
+		case FACTOR_ONE_MINUS_SRC_ALPHA: {
 			color_factor = Color(1, 1, 1, 1) - Color(p_src.a, p_src.a, p_src.a, p_src.a);
-			break;
-		case FACTOR_DST_ALPHA:
+		} break;
+		case FACTOR_DST_ALPHA: {
 			color_factor = Color(p_dst.a, p_dst.a, p_dst.a, p_dst.a);
-			break;
-		case FACTOR_ONE_MINUS_DST_ALPHA:
+		} break;
+		case FACTOR_ONE_MINUS_DST_ALPHA: {
 			color_factor = Color(1, 1, 1, 1) - Color(p_dst.a, p_dst.a, p_dst.a, p_dst.a);
-			break;
-		case FACTOR_DST_ALPHA_TIMES_ONE_MINUS_SRC_ALPHA:
+		} break;
+		case FACTOR_DST_ALPHA_TIMES_ONE_MINUS_SRC_ALPHA: {
 			color_factor = Color(p_dst.a, p_dst.a, p_dst.a, p_dst.a) * (Color(1, 1, 1, 1) - Color(p_src.a, p_src.a, p_src.a, p_src.a));
-			break;
+		} break;
 	}
-
 	return color_factor;
 }
 
@@ -46,45 +45,43 @@ Color ImageBlender::blend_colors(const Color &p_src, const Color &p_dst) const {
 	Color color;
 
 	switch (rgb_equation) {
-		case FUNC_ADD:
+		case FUNC_ADD: {
 			color = p_src * calculate_rgb_src_factor(p_src, p_dst) + p_dst * calculate_rgb_dst_factor(p_src, p_dst);
-			break;
-		case FUNC_SUBTRACT:
+		} break;
+		case FUNC_SUBTRACT: {
 			color = p_src * calculate_rgb_src_factor(p_src, p_dst) - p_dst * calculate_rgb_dst_factor(p_src, p_dst);
-			break;
-		case FUNC_REVERSE_SUBTRACT:
+		} break;
+		case FUNC_REVERSE_SUBTRACT: {
 			color = p_dst * calculate_rgb_dst_factor(p_src, p_dst) - p_src * calculate_rgb_src_factor(p_src, p_dst);
-			break;
-		case FUNC_MAX:
+		} break;
+		case FUNC_MAX: {
 			color.r = MAX(p_src.r, p_dst.r);
 			color.g = MAX(p_src.g, p_dst.g);
 			color.b = MAX(p_src.b, p_dst.b);
-			break;
-		case FUNC_MIN:
+		} break;
+		case FUNC_MIN: {
 			color.r = MIN(p_src.r, p_dst.r);
 			color.g = MIN(p_src.g, p_dst.g);
 			color.b = MIN(p_src.b, p_dst.b);
-			break;
-	};
-
+		} break;
+	}
 	switch (alpha_equation) {
-		case FUNC_ADD:
+		case FUNC_ADD: {
 			color.a = (p_src * calculate_alpha_src_factor(p_src, p_dst)).a + (p_dst * calculate_alpha_dst_factor(p_src, p_dst)).a;
-			break;
-		case FUNC_SUBTRACT:
+		} break;
+		case FUNC_SUBTRACT: {
 			color.a = (p_src * calculate_rgb_src_factor(p_src, p_dst)).a - (p_dst * calculate_rgb_dst_factor(p_src, p_dst)).a;
-			break;
-		case FUNC_REVERSE_SUBTRACT:
+		} break;
+		case FUNC_REVERSE_SUBTRACT: {
 			color.a = (p_dst * calculate_rgb_dst_factor(p_src, p_dst)).a - (p_src * calculate_rgb_src_factor(p_src, p_dst)).a;
-			break;
-		case FUNC_MAX:
+		} break;
+		case FUNC_MAX: {
 			color.a = MAX(p_src.a, p_dst.a);
-			break;
-		case FUNC_MIN:
+		} break;
+		case FUNC_MIN: {
 			color.a = MIN(p_src.a, p_dst.a);
-			break;
-	};
-
+		} break;
+	}
 	return color;
 }
 
@@ -129,7 +126,6 @@ void ImageBlender::blend_rect(const Ref<Image> p_src, const Rect2 &p_src_rect, R
 			p_dst->set_pixel(dst_x, dst_y, blend_colors(sc, dc));
 		}
 	}
-
 	img->unlock();
 	p_dst->unlock();
 }
@@ -167,6 +163,7 @@ void ImageBlender::_bind_methods() {
 	BIND_ENUM_CONSTANT(FUNC_MIN);
 	BIND_ENUM_CONSTANT(FUNC_MAX);
 	BIND_ENUM_CONSTANT(FACTOR_ZERO);
+
 	BIND_ENUM_CONSTANT(FACTOR_ONE);
 	BIND_ENUM_CONSTANT(FACTOR_SRC_COLOR);
 	BIND_ENUM_CONSTANT(FACTOR_ONE_MINUS_SRC_COLOR);

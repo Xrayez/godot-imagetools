@@ -74,4 +74,4 @@ public:
 
 VARIANT_ENUM_CAST(ImageIndexed::DitherMode)
 
-#endif
+#endif // GODOT_IMAGE_INDEXED_H

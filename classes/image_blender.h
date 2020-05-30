@@ -73,4 +73,4 @@ public:
 VARIANT_ENUM_CAST(ImageBlender::BlendEquation);
 VARIANT_ENUM_CAST(ImageBlender::BlendFactor);
 
-#endif
+#endif // GODOT_IMAGE_BLENDER_H
