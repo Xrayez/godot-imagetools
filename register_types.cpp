@@ -8,6 +8,7 @@
 #include "bind/image_tools_bind.h"
 #include "image_indexed.h"
 #include "image_tools.h"
+#include "image_blender.h"
 
 static _ImageTools *_image_tools = NULL;
 
@@ -30,6 +31,9 @@ void register_imagetools_types() {
 
 	resource_saver_indexed_png.instance();
 	ResourceSaver::add_resource_format_saver(resource_saver_indexed_png);
+
+	// Image blender
+	ClassDB::register_class<ImageBlender>();
 }
 
 void unregister_imagetools_types() {
