@@ -3,8 +3,8 @@
 
 #include "core/image.h"
 
-class ImageBlender : public Object {
-	GDCLASS(ImageBlender, Object);
+class ImageBlender : public Reference {
+	GDCLASS(ImageBlender, Reference);
 
 protected:
 	static void _bind_methods();
