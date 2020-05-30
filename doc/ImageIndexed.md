@@ -1,6 +1,6 @@
 # `ImageIndexed`
 
-![image-palettes](../../examples/images/palette.png)
+![image-palettes](images/palette.png)
 
 ## Features
 
@@ -39,7 +39,7 @@ var dominant_color = image.get_palette_color(1)
 image.generate_palette(8)
 var average_colors = image.get_palette()
 ```
-![average-colors](../../examples/images/dominant-average-colors.png)
+![average-colors](images/dominant-average-colors.png)
 
 
 * Image posterization? (8-bit feel):
@@ -48,7 +48,7 @@ var image = get_node('sprite').texture.get_data()
 image.generate_palette(8)
 image.apply_palette()
 ```
-![posterization](../../examples/images/posterization.png)
+![posterization](images/posterization.png)
 
 
 * [Palette swapping](https://github.com/HeartoLazor/godot_palette_swap)
@@ -63,7 +63,7 @@ image.set_palette_color(1, Color.darkred)
 
 image.apply_palette()
 ```
-![palette-swapping](../../examples/images/palette-swapping.png)
+![palette-swapping](images/palette-swapping.png)
 
 ## Example project
 
