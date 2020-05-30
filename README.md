@@ -31,10 +31,10 @@ encoding, such as `1.0-gd3` or `1.0-gd4`, if available.
 
 ### List of classes:
 
-| Class                                                  | Short Description                                                             |
-| ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| [`ImageIndexed`](classes/descriptions/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette.                  |
-| `ImageBlender`                                         | Provides advanced image blending methods (derived from OpenGL specification). |
+| Class                                 | Short Description                                                             |
+| ------------------------------------- | ----------------------------------------------------------------------------- |
+| [`ImageIndexed`](doc/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette.                  |
+| `ImageBlender`                        | Provides advanced image blending methods (derived from OpenGL specification). |
 
 ## Installation
 
