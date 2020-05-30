@@ -57,8 +57,8 @@ See [Contributing](CONTRIBUTING.md) if you are interested in extending the
 module in any way.
 
 Any new features are encouraged to be developed against the latest Godot
-Engine's *stable* version, and later ported to the latest engine's *development*
-version.
+Engine's *stable* version, which may be optionally ported to the latest engine's
+*development* version.
 
 ## License:
 The module is under MIT license.
