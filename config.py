@@ -9,6 +9,7 @@ def get_doc_classes():
     return [
         "ImageTools",
         "ImageIndexed",
+        "ImageBlender"
     ]
 
 def get_doc_path():
