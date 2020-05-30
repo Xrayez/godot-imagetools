@@ -1,6 +1,7 @@
 # MIT License
 
-Copyright (c) 2019-2020 Andrii Doroshenko and contributors
+Copyright (c) 2019-2020 Andrii Doroshenko.
+Copyright (c) 2020 ImageTools contributors (cf. AUTHORS.md).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

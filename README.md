@@ -1,4 +1,4 @@
-# Godot ImageTools
+# ImageTools
 
 [![Build Status](https://travis-ci.com/Xrayez/godot-imagetools.svg?branch=master-gd3)](https://travis-ci.com/Xrayez/godot-imagetools)
 [![Build status](https://ci.appveyor.com/api/projects/status/tbtra8e221si05bq/branch/master-gd3?svg=true)](https://ci.appveyor.com/project/Xrayez/godot-imagetools/branch/master-gd3)
@@ -22,7 +22,7 @@ encoding, such as `1.0-gd3` or `1.0-gd4`, if available.
 
 ### List of public methods:
 | Method              | Short Description                                                           |
-|---------------------|-----------------------------------------------------------------------------|
+| ------------------- | --------------------------------------------------------------------------- |
 | `replace_color`     | Replaces all occurrences of a given color with another one within an image. |
 | `bucket_fill`       | Fills the area with a color confined by opaque pixels.                      |
 | `resize_hqx`        | Expands the image using either HQ2X or HQ3X algorithms.                     |
@@ -31,9 +31,10 @@ encoding, such as `1.0-gd3` or `1.0-gd4`, if available.
 
 ### List of classes:
 
-| Class          | Short Description                                                                                  |
-|----------------|----------------------------------------------------------------------------------------------------|
-| [ImageIndexed](classes/descriptions/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette. |
+| Class                                                  | Short Description                                                             |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| [`ImageIndexed`](classes/descriptions/ImageIndexed.md) | Adds pseudo support for indexed images with a color palette.                  |
+| `ImageBlender`                                         | Provides advanced image blending methods (derived from OpenGL specification). |
 
 ## Installation
 
