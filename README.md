@@ -3,13 +3,13 @@
 [![Build Status](https://travis-ci.com/Xrayez/godot-imagetools.svg?branch=master-gd3)](https://travis-ci.com/Xrayez/godot-imagetools)
 [![Build status](https://ci.appveyor.com/api/projects/status/tbtra8e221si05bq/branch/master-gd3?svg=true)](https://ci.appveyor.com/project/Xrayez/godot-imagetools/branch/master-gd3)
 
-## DEPRECATED: use [Goost](https://github.com/GoostGD/goost) extension instead
+## DEPRECATED: use [Goost](https://github.com/goostengine/goost) extension instead
 
 The module is no longer maintained by the original author(s) and only critical
 bug fixes are accepted.
 
 The module's entire functionality is merged as part of the
-[Goost](https://github.com/GoostGD/goost) extension. Users and past contributors
+[Goost](https://github.com/goostengine/goost) extension. Users and past contributors
 (if any) are encouraged to switch to use the extension.
 
 ---
